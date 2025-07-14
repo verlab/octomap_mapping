@@ -19,6 +19,9 @@ jobs:
 
       - name: Install catkin tools and deps
         run: |
+          export DEBIAN_FRONTEND=noninteractive
+          echo "keyboard-configuration keyboard-configuration/layoutcode string us" | sudo debconf-set-selections
+          echo "keyboard-configuration keyboard-configuration/modelcode string pc105" | sudo debconf-set-selections
           sudo apt update
           sudo apt install -y git python3-catkin-tools python3-pip
           sudo apt install -y \
