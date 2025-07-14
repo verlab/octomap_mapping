@@ -1,4 +1,4 @@
-octomap_mapping ![CI](https://github.com/OctoMap/octomap_mapping/workflows/CI/badge.svg)
+octomap_mapping ![CI](https://github.com/verlab/octomap_mapping/actions/workflows/workflow.yml/badge.svg?branch=ci-cd)
 ===============
 
 ROS stack for mapping with OctoMap, contains the `octomap_server` package.

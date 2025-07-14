@@ -1,0 +1,49 @@
+name: Build ROS Package
+
+on:
+  pull_request:
+    branches: [main, dev]
+  push:
+    branches: [main, dev]
+  workflow_dispatch:
+
+jobs:
+  ros_build:
+    runs-on: ubuntu-latest
+    container:
+      image: ros:noetic-ros-base-focal
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Install catkin tools and deps
+        run: |
+          sudo apt update
+          sudo apt install -y git python3-catkin-tools python3-pip
+          sudo apt install -y \
+            ros-noetic-roscpp \
+            ros-noetic-visualization-msgs \
+            ros-noetic-sensor-msgs \
+            ros-noetic-pcl-ros \
+            ros-noetic-pcl-conversions \
+            ros-noetic-nav-msgs \
+            ros-noetic-std-msgs \
+            ros-noetic-std-srvs \
+            ros-noetic-octomap \
+            ros-noetic-octomap-msgs \
+            ros-noetic-octomap-ros \
+            ros-noetic-dynamic-reconfigure \
+            ros-noetic-nodelet
+          
+      - name: Build workspace
+        shell: bash
+        run: |
+          source /opt/ros/noetic/setup.bash
+          cp -r . ~/catkin_ws/src/
+          cd ~/catkin_ws
+          rosdep update
+          rosdep install --from-paths src --ignore-src -r -y
+          catkin init
+          catkin config --extend /opt/ros/noetic
+          catkin build
